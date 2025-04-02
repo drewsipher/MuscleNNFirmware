@@ -700,6 +700,10 @@ void process_btn_read()
 
 int main(void)
 {
+
+	 // Give debugger time to connect before configuring anything
+	 delay_ms(100);
+	 
 	NRF_GPIO->DIRSET = 1<<pin_syson;
 	NRF_GPIO->OUTSET = 1<<pin_syson;
 	NRF_WDT->CRV = 1*32768; //1 second timeout
