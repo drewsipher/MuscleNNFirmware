@@ -1,12 +1,12 @@
-PROJECT_NAME     := uMyo
-TARGETS          := uMyo
+PROJECT_NAME     := MuscleNNFirmware
+TARGETS          := MuscleNNFirmware
 OUTPUT_DIRECTORY := build/
 
 SDK_ROOT := ../urf_lib/nrf_usdk52
 PROJ_DIR := .
 
-$(OUTPUT_DIRECTORY)/uMyo.out: \
-  LINKER_SCRIPT  := uMyo_nrf52.ld
+$(OUTPUT_DIRECTORY)/MuscleNNFirmware.out: \
+  LINKER_SCRIPT  := MuscleNN_nrf52.ld
   #../ur_device_nrf52810.ld 
 
 # Source files common to all targets
@@ -91,7 +91,7 @@ LIB_FILES += -lc -lnosys -lm
 .PHONY: default
 
 # Default target - first one defined
-default: uMyo
+default: MuscleNNFirmware
 
 TEMPLATE_PATH := $(SDK_ROOT)/gcc
 

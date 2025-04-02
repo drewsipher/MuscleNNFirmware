@@ -264,10 +264,10 @@ int prepare_and_send_BLE()
 	flags.value = 0;
 	data[0] = flags.value;
 	pp = ble_add_field_to_pdu(pdu_data, pp, data, 1, PDU_FLAGS);
-	int nlen = sprintf((char*)data, "uMyo v2");
+	int nlen = sprintf((char*)data, "Mnn");
 	pp = ble_add_field_to_pdu(pdu_data, pp, data, nlen, PDU_SHORT_NAME);
 	
-	//17 bytes remains for payload
+	//20 bytes remains for payload
 	int dpos = 0;
 	data[dpos++] = adc_data_id;
 	data[dpos++] = battery_level;
@@ -282,8 +282,11 @@ int prepare_and_send_BLE()
 	data[dpos++] = qww>>8;
 	data[dpos++] = qww&0xFF;
 	data[dpos++] = qwx>>8;
+	data[dpos++] = qwx&0xFF;  // Add low byte
 	data[dpos++] = qwy>>8;
+	data[dpos++] = qwy&0xFF;  // Add low byte
 	data[dpos++] = qwz>>8;
+	data[dpos++] = qwz&0xFF;  // Add low byte
 	pp = ble_add_field_to_pdu(pdu_data, pp, data, dpos, PDU_MANUFACTURER_SPEC);
 		
 	static int adv_ch = 37; //cycle through advertising channels
