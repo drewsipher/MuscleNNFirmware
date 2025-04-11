@@ -130,8 +130,11 @@ typedef struct sLSM6DS3
 	uint32_t imu_read_time;
 	uint32_t temp_read_time;
 	uint32_t steps_read_time;
+
+    uint8_t status;
 }sLSM6DS3;
 
+//These unions are LSB first (right to left on datasheet)
 
 typedef struct {
     union {

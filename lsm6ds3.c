@@ -209,8 +209,9 @@ uint8_t lsm_read()
 		quat_update_pending = 0;
 	}
 	if(lsm_in_reading) return 0;
-	uint8_t status = lsm_read_reg8(LSM6_STATUS_REG);
-	if((status & 0b11) != 0b11) return 0;
+
+	lsm.status = lsm_read_reg8(LSM6_STATUS_REG);
+	if((lsm.status & 0b11) != 0b11) return 0;
 	spi_read_buf(LSM6_OUT_TEMP_L | (1<<7), 14, lsm_read_cplt, lsm_spi_buf, lsm.CS);
 	lsm_in_reading = 1;
 	return 1;
@@ -218,8 +219,9 @@ uint8_t lsm_read()
 
 void lsm_init(uint8_t pin_COPI, uint8_t pin_CIPO, uint8_t pin_SCK, uint8_t pin_CS, uint8_t pin_INT)
 {
-	NRF_GPIO->DIRSET = 1<<pin_CS;
+	delay_ms(100);
 	lsm.CS = 1<<pin_CS;
+	NRF_GPIO->DIRSET = lsm.CS;
 	NRF_GPIO->OUTSET = lsm.CS;
 	lsm.data_id = 0;
 	
@@ -240,10 +242,6 @@ void lsm_init(uint8_t pin_COPI, uint8_t pin_CIPO, uint8_t pin_SCK, uint8_t pin_C
 	cfg2.f.scale = 1; //500 dps
 	cfg2.f.odr = 0b0110; //416 Hz
 	lsm_write_reg8(LSM6_CTRL2_G, cfg2.reg);
-//	LSM6DS3_INT_REG int_cfg;
-//	int_cfg.reg = 0;
-//	int_cfg.f.gyro_ready = 1;
-//	lsm_write_reg8(LSM6_INT1_CTRL, int_cfg.reg);
 }
 
 sLSM6DS3 *lsm_get_object()

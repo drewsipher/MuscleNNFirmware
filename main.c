@@ -237,7 +237,7 @@ int prepare_and_send_BLE()
 	if(ms - radio_last_send_time < cur_adv_delay) return 0;
 	radio_last_send_time = ms;
 	uint8_t rnd = adc_buffer[adc_buf_pos]&0xFF;
-	cur_adv_delay = 2 + (rnd%8);
+	cur_adv_delay = 0 + (rnd%3);
 
 	uint32_t unit_id = NRF_FICR->DEVICEID[1];
 	uint8_t ble_mac[6];
@@ -287,16 +287,18 @@ int prepare_and_send_BLE()
 	data[dpos++] = qwy&0xFF;  // Add low byte
 	data[dpos++] = qwz>>8;
 	data[dpos++] = qwz&0xFF;  // Add low byte
+
+	data[dpos++] = lsm_get_object()->status;
 	pp = ble_add_field_to_pdu(pdu_data, pp, data, dpos, PDU_MANUFACTURER_SPEC);
 		
-	static int adv_ch = 37; //cycle through advertising channels
+	const int adv_ch = 37; //cycle through advertising channels
 	uint8_t pdu[40];
 
 	ble_set_connection_mode(0);
 	int len = ble_prepare_adv_pdu(pdu, pp, pdu_data, BLE_ADV_NONCONN_IND_TYPE, 0, 1);
 	ble_send_advertisement_packet(len, pdu, adv_ch);
-	adv_ch++;
-	if(adv_ch > 39) adv_ch = 37;
+	// adv_ch++;
+	// if(adv_ch > 39) adv_ch = 37;
 	return 1;
 }
 

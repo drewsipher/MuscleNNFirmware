@@ -1,1 +1,1 @@
-sudo openocd -f rpi4.cfg -c "transport select swd" -c "adapter speed 400" -c "adapter srst pulse_width 100" -c "adapter srst delay 100" -f target/nrf52.cfg -c "init" -c "nrf52_recover" -c "reset halt" -c "program build/uMyo.hex verify" -c "reset" -c "shutdown"
+sudo openocd -f rpi4.cfg -c "transport select swd" -c "adapter speed 400" -c "adapter srst pulse_width 100" -c "adapter srst delay 100" -f target/nrf52.cfg -c "init" -c "nrf52_recover" -c "reset halt" -c "program build/MuscleNNFirmware.hex verify" -c "reset" -c "shutdown"
